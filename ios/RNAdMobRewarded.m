@@ -79,10 +79,9 @@ RCT_EXPORT_METHOD(showAd:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRej
     if ([[GADRewardBasedVideoAd sharedInstance] isReady]) {
         UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
         UIViewController *rootViewController = [keyWindow rootViewController];
-        UIViewController *presentedViewContoller = [rootViewController presentedViewController];
         
-        if (presentedViewContoller) {
-            rootViewController = presentedViewContoller;
+        while ([rootViewController presentedViewController] != nil) {
+            rootViewController = [rootViewController presentedViewController];
         }
         
         [[GADRewardBasedVideoAd sharedInstance] presentFromRootViewController:rootViewController];
