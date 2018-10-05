@@ -112,7 +112,11 @@ RCT_EXPORT_METHOD(isReady:(RCTResponseSenderBlock)callback)
     if (hasListeners) {
         [self sendEventWithName:kEventAdLoaded body:nil];
     }
-    _requestAdResolve(nil);
+    
+    if (_requestAdResolve) {
+        _requestAdResolve(nil);
+        _requestAdResolve = nil;
+    }
 }
 
 - (void)interstitial:(__unused GADInterstitial *)interstitial didFailToReceiveAdWithError:(GADRequestError *)error
@@ -121,7 +125,11 @@ RCT_EXPORT_METHOD(isReady:(RCTResponseSenderBlock)callback)
         NSDictionary *jsError = RCTJSErrorFromCodeMessageAndNSError(@"E_AD_REQUEST_FAILED", error.localizedDescription, error);
         [self sendEventWithName:kEventAdFailedToLoad body:jsError];
     }
-    _requestAdReject(@"E_AD_REQUEST_FAILED", error.localizedDescription, error);
+    
+    if (_requestAdReject) {
+        _requestAdReject(@"E_AD_REQUEST_FAILED", error.localizedDescription, error);
+        _requestAdReject = nil;
+    }
 }
 
 - (void)interstitialWillPresentScreen:(__unused GADInterstitial *)ad
