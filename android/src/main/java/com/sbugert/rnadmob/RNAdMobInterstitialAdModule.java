@@ -114,7 +114,7 @@ public class RNAdMobInterstitialAdModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setAdUnitID(String adUnitID) {
+    public void setAdUnitID(final String adUnitID) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
